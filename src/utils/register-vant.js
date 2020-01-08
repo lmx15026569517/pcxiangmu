@@ -5,7 +5,11 @@ import {
     Button,
     Cell,
     CellGroup,
-    Icon
+    Icon,
+    NavBar,
+    Field,
+    Button
+
 
 } from 'vant';
 
@@ -14,3 +18,6 @@ Vue.use(Button)
     .use(Cell)
     .use(CellGroup)
     .use(Icon)
+    .use(NavBar)
+    .use(Field)
+    .use(Button)
