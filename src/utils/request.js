@@ -8,7 +8,7 @@ import jsonBig from 'json-bigint'
 
 //  axios.create 方法创建一个和axios本身一样的对象
 const request = axios.create({
-        baseURL: '"http://ttapi.research.itcast.cn/"' //  基础路径
+        baseURL: "http://ttapi.research.itcast.cn" //  基础路径
     })
     //  axios开放了定义转换后端返回数据APL
     //  data就是后端返回的数据
