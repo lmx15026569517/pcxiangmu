@@ -1,7 +1,7 @@
 <template>
   <div class="login-container">
     <!-- 导航栏 -->
-      <van-nav-bar title="登录"/>
+      <van-nav-bar title="导航"/>
     <!-- /导航栏 -->
 
     <!-- 登录表单 -->
@@ -23,18 +23,21 @@
         <van-count-down 
         v-if="isCountDownShow"
           slot="button" 
-          :time="1000 * 60" 
+          :time="1000 * 5" 
           format=" ss s"
+          @finish="isCountDownShow = false"
           />
         <van-button 
           v-else
+          slot="button" 
           size="small" 
           type="primary"
           round
+          @click="onSendSmsCode"
           >发送验证码</van-button>
          </van-field>
       </van-cell-group>
-      <!-- wrap  包裹的意思 -->
+  
       <div  class="login-btn-wrap">
         <van-button type="info" @click="onLogin">请登录</van-button>
       </div>
@@ -44,7 +47,7 @@
 
 <script>
 
- import { login } from '@/api/user'
+ import { login, getSmsCode } from '@/api/user'
   export default {
     name: "LoginPage",
     components: {},
@@ -72,16 +75,13 @@
           message: "登录中...",
           forbidClick: true //  是否禁止背景点击
         })
-      //  手动停止提示
-      // 提示abc.clear()
-
-
+        //  手动停止提示
+        // 提示abc.clear()
         // 3. 请求登录
       try{
         const res = await login(user)
 
         window.console.log(res)
-
         //  提示成功
         this.$toast.success('登录成功')
       } catch(err) {
@@ -89,6 +89,23 @@
         this.$toast.fail('登录失败')
       }
         // 4.根据后端返回结果执行后续业务处理
+      },
+      async onSendSmsCode () {
+       try {
+               const { mobile } = this.user
+        //  1请求发送手机号是否有效
+
+        //  2请求发送验证码
+        const res = await getSmsCode(mobile)
+        window.console.log(res)
+        
+        //  3显示倒时器
+        this.isCountDownShow = true
+        } catch (err) {
+          window.console.log(err)
+          this.$toast('请勿频繁操作')
+        }
+        
       }
     }
   };
