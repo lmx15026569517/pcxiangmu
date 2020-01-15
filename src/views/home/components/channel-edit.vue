@@ -10,26 +10,39 @@
         >{{ isEditShow ? '完成' : '编辑' }}</van-button>
     </van-cell> 
     <!-- bug  说我两个对象,就是:key没有写.id -->
-      <van-grid :gutter="10" clickable>
+    <van-grid :gutter="10" clickable>
       <van-grid-item
         v-for="(channel, index) in userChannels"
         :key="channel.id"
-        :text="channel.name"
         @click="onUserChannelClik(index)"
       >
       <!-- 推荐频道不删除 -->
+      <!-- :class="{ 
+         组建索引   active: index === active 父组件高亮索引
+        }" 
+        样式绑定.
+        属性名: css 类名
+        属性值:一个布尔值
+        -->
+      <span 
+      slot="text"
+      class="text"
+      :class="{
+        active: index === active
+        }"
+      >{{ channel.name }}</span>
         <van-icon v-show="isEditShow && index !==0" slot="icon" name="close" />
       </van-grid-item>
 
-</van-grid>
+    </van-grid>
     <van-cell class="channel-header" title="推荐频道" :border="false"/>
       <van-grid :gutter="10" clickable>
-      <van-grid-item
-        v-for="channel in remainingChannels"
-        :key="channel.id"
-        :text="channel.name"
-        @click="onAdd(channel)"
-      />
+        <van-grid-item
+          v-for="channel in remainingChannels"
+          :key="channel.id"
+          :text="channel.name"
+          @click="onAdd(channel)"
+        />
     </van-grid>
   </div>
 </template>
@@ -44,6 +57,10 @@ export default {
   props: {
     userChannels: {
       type: Array,
+      required: true
+    },
+    active: {
+      type: Number,
       required: true
     }
   },
@@ -117,9 +134,12 @@ export default {
     .van-grid-item__content {
       background: #f4f5f6;
     }
-    .van-grid-item__text {
+    .van-grid-item__text, .text {
       font-size: 14px;
       color: #222;
+    }
+    .active {
+      color: red;
     }
   }
 }
