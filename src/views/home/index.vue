@@ -21,7 +21,6 @@
         v-for="channel in userChannels"
         :key="channel.id"
         >
-
         <!-- 文章列表 -->
         <!-- TODO:  文章列表没有写-->
         <article-list :channel="channel" />
@@ -37,7 +36,9 @@
       round
       closeable
       close-icon-position="top-left"
-    />
+    >
+    <channel-edit />
+     </van-popup>
     <!-- /编辑频道 -->
   </div>
 </template>
@@ -45,11 +46,14 @@
 <script>
 import { getUserChannels } from '@/api/channel'
 import ArticleList from './components/article-list'
+import ChannelEdit from './components/channel-edit'
+
 
 export default {
   name:'HomePage',
   components: {
-    ArticleList
+    ArticleList,
+    ChannelEdit
   },
   props: {},
   data () {
