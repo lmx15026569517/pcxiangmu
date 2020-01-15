@@ -6,13 +6,22 @@
 
     <!-- 频道列表 -->
     <!-- 
-      v-model="active"控制标签激活页
+      v-model="active"控制激活的标签title标签标题
      -->
     <van-tabs v-model="active">
+      <!-- 通过差曹把面包按钮放进去 -->
+      <van-icon 
+       class="wap-nav"
+       slot="nav-right"
+       name="wap-nav"
+       @click="isChannelEditShow = true" 
+      />
       <van-tab 
         :title="channel.name" 
         v-for="channel in userChannels"
-        :key="channel.id">
+        :key="channel.id"
+        >
+
         <!-- 文章列表 -->
         <!-- TODO:  文章列表没有写-->
         <article-list :channel="channel" />
@@ -47,7 +56,8 @@ export default {
     return {
       active: 0,  // 控制激活的标签页
       userChannels: [], // 获取用户频道列表
-      isChannelEditShow: true
+      isChannelEditShow: true //这里我们先设置为 true 就能看到弹窗的页面了
+ 
     }
   },
   computed: {},
@@ -69,6 +79,17 @@ export default {
  
 <style scoped lang="less">
 .home-container {
+  padding-top:90px;
+  padding-bottom: 50px;
+}
+.wap-nav {
+  position: fixed;
+  right: 0;
+  line-height: 44px;
+  background: #fff;
+  opacity: .8;
+}
+
   /deep/ .van-tabs__wrap {
     position: fixed;
     top: 46px;
@@ -76,7 +97,7 @@ export default {
     right: 0;
     z-index: 1;
   }
-}
+
 // 扩展 关于组件作用域(注意也能对组件根节点有效),不仅对当前组件有效还可以对子组件的跟组件有效
 //  给组件一个class 也会给标签生成有个class名字 ,
 // /deep/  >>>(可以作用更深)  ::v-deep 那个不报错使用哪个

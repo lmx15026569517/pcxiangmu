@@ -1,7 +1,7 @@
 <template>
   <div class="article-list">
-    @refresh = 下拉刷新的事件
-    -->
+    <!-- @refresh = 下拉刷新的事件
+    --> 
     <van-pull-refresh v-model="isLoading" @refresh="onRefresh">
         <!-- v-model="lsLoading"  控制下拉刷新的 loading的状态-->
         <van-list
