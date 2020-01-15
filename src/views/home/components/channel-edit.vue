@@ -6,9 +6,9 @@
     </van-cell> 
       <van-grid :gutter="10">
       <van-grid-item
-        v-for="value in 8"
-        :key="value"
-        text="相信"
+        v-for="channel in userChannels"
+        :key="channel"
+        :text="channel.name"
       />
 </van-grid>
     <van-cell title="推荐频道" :border="false"/>
@@ -26,7 +26,14 @@
 export default {
   name: 'ChannelEdit',
   components: {},
-  props: {},
+  //  简单写法props[]
+  //  建议写法,props 验证
+  props: {
+    userChannels: {
+      type: Array,
+      required: true
+    }
+  },
   data () {
     return {}
   },
