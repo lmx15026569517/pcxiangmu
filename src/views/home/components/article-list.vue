@@ -1,6 +1,5 @@
 <template>
   <div class="article-list">
-    <!-- <div>{{ channel.name }}频道的文章列表</div> 
     @refresh = 下拉刷新的事件
     -->
     <van-pull-refresh v-model="isLoading" @refresh="onRefresh">
