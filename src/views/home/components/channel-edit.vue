@@ -15,6 +15,7 @@
         v-for="(channel, index) in userChannels"
         :key="channel.id"
         :text="channel.name"
+        @click="onUserChannelClik(index)"
       >
       <!-- 推荐频道不删除 -->
         <van-icon v-show="isEditShow && index !==0" slot="icon" name="close" />
@@ -79,6 +80,13 @@ export default {
     },
     onAdd (channel) {
       this.userChannels.push(channel)
+    },
+    onUserChannelClik (index) {
+      //  如果是编辑状态, 则执行删除操作
+      if (this.isEditShow && index !== 0) {
+        this.userChannels.splice(index, 1)  // 从索引处开始,删除指定的个数
+      }
+      //  如果是非编辑状态,则执行切换频道操作
     }
   }
 }
