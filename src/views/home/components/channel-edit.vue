@@ -2,19 +2,27 @@
   <div class="channel-edit">
     <!-- 按钮样式组件 -->
     <van-cell title="我的频道" :border="false">
-        <van-button size="mini" round type="danger">编辑</van-button>
+        <van-button 
+        size="mini" 
+        round 
+        plain
+        @click="isEditShow = !isEditShow"
+        >{{ isEditShow ? '完成' : '编辑' }}</van-button>
     </van-cell> 
     <!-- bug  说我两个对象,就是:key没有写.id -->
-      <van-grid :gutter="10">
+      <van-grid :gutter="10" clickable>
       <van-grid-item
-        v-for="channel in userChannels"
+        v-for="(channel, index) in userChannels"
         :key="channel.id"
         :text="channel.name"
-      />  
+      >
+      <!-- 推荐频道不删除 -->
+        <van-icon v-show="isEditShow && index !==0" slot="icon" name="close" />
+      </van-grid-item>
 
 </van-grid>
-    <van-cell title="推荐频道" :border="false"/>
-      <van-grid :gutter="10">
+    <van-cell class="channel-header" title="推荐频道" :border="false"/>
+      <van-grid :gutter="10" clickable>
       <van-grid-item
         v-for="channel in remainingChannels"
         :key="channel.id"
@@ -40,7 +48,8 @@ export default {
   },
   data () {
     return {
-      allChannels: [] //  所有频道
+      allChannels: [], //  所有频道
+      isEditShow: false  //  控制显示和隐藏
     }
   },
   computed: {
@@ -75,8 +84,33 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped lang="less">
 .channel-edit {
   padding-top: 40px;
+  .channel-header {
+    font-size: 16px;
+    color: #333;
+  }
+  /deep/ .van-grid-item {
+    width: 80px;
+    height: 43px;
+    position: relative;
+    .van-grid-item__icon-wrapper {
+      position: absolute;
+      top: -14px;
+      right: -5px;
+      .van-icon-close {
+        font-size: 14px;
+      }
+    }
+
+    .van-grid-item__content {
+      background: #f4f5f6;
+    }
+    .van-grid-item__text {
+      font-size: 14px;
+      color: #222;
+    }
+  }
 }
 </style>
