@@ -85,8 +85,10 @@ export default {
       //  如果是编辑状态, 则执行删除操作
       if (this.isEditShow && index !== 0) {
         this.userChannels.splice(index, 1)  // 从索引处开始,删除指定的个数
-      }
+      } else {
       //  如果是非编辑状态,则执行切换频道操作
+      this.$emit('switch', index)
+      }
     }
   }
 }

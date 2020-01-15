@@ -37,7 +37,10 @@
       closeable
       close-icon-position="top-left"
     >
-    <channel-edit :user-channels="userChannels"/>
+    <channel-edit 
+    :user-channels="userChannels"
+    @switch="onChannelSwitch"
+    />
      </van-popup>
     <!-- /编辑频道 -->
   </div>
@@ -73,12 +76,21 @@ export default {
   methods: {
     
     async loadUserChannels () {
-      const { data } = await getUserChannels()
-      this.userChannels = data.data.channels
+      try {
+        const { data } = await getUserChannels()
+        this.userChannels = data.data.channels
+      } catch (err) {
+        window.console.log(err) 
+        this.$toast('获取频道数据失败')
+        }
+      },
+
+       onChannelSwitch (index) {
+         this.active = index // 切换激活频道
+         this.isChannelEditShow = false //  关闭弹层
+       }
     }
   }
-
-}
 </script>
  
 <style scoped lang="less">
