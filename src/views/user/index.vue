@@ -7,7 +7,11 @@
     <!-- 用户信息 -->
     <div class="user-info-container">
       <div class="row1">
-        <van-image class="col1" fit="cover" round :src="user.photo" />
+        <van-image 
+        class="col1" 
+        fit="cover" 
+        round 
+        :src="user.photo" />
         <div class="col2">
           <div class="row1">
             <div class="item">
@@ -87,7 +91,7 @@ export default {
     async loadUser() {
       try {
         const { data } = await getUserById(this.$route.params.useId); //  传入用户ID
-        this.user = data.data;
+        this.user = data.data
       } catch (err) {
         window.console.log(err);
         this.$toast("获取用户数据失败");

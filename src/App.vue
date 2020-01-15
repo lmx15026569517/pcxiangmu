@@ -6,15 +6,15 @@
     <!-- <i class="iconfont icon-apple"></i>
     <van-icon name="fire-o" />
     <van-icon name="fire-o" /> -->
-<!-- 改icon图标的时候 -->
-<!--class-prefix="foo"
- name="abc" 
+    <!-- 改icon图标的时候 -->
+    <!--class-prefix="foo"
+     name="abc"     
 
- foo foo-abc
+     foo foo-abc    
 
- iconfont icon-apple   
+     iconfont icon-apple   
  
-  -->
+     -->
   </div>
 </template>
 

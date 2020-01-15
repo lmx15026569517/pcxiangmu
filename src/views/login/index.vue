@@ -76,8 +76,8 @@
     data() {
       return {
         user: {
-          mobile: '',  // 手机号
-          code: '' // 验证码
+          mobile: '',  // 手机号13911111111
+          code: '' // 验证码246810
         },
         isCountDownShow: false  //  是否显示倒计时
       }
@@ -93,6 +93,7 @@
 
         // 2. 表单验证
         const success = await this.$refs.form.validate()
+        // window.console.log(success)
 
         if (!success) {
            window.console.log('表单表单验证失败')
