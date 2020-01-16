@@ -19,7 +19,10 @@
     <!-- /搜索栏 -->
 
      <!-- 搜索结果 isSearchResultShow = true 逻辑 -->
-    <search-result v-if="isSearchResultShow" />
+    <search-result 
+      v-if="isSearchResultShow" 
+      :q="searchContent"
+      />
     <!-- /搜索结果 -->
 
      <!-- 联想建议 isSearchResultShow=false 文本框有内容显示联想建议-->
