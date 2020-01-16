@@ -1,5 +1,7 @@
 <template>
   <div class="search-container">
+    <!--  <div>{{htmlStr}}</div> -->
+    <!-- <div v-html="htmlStr"></div>  -->
       <!-- 搜索栏 -->
     <form class="search-form" action="/">
       <van-search
@@ -22,11 +24,13 @@
 
      <!-- 联想建议 isSearchResultShow=false 文本框有内容显示联想建议-->
     <van-cell-group v-else-if="searchContent">
-      <van-cell icon="search"
-       :title="item"
+      <van-cell 
+       icon="search"
        v-for="(item, index) in suggestions"
        :key="index"
-        />
+        >
+        <div slot="title" v-html="highlight(item)"></div>
+      </van-cell>
     </van-cell-group>
     <!-- /联想建议 -->
 
@@ -75,7 +79,8 @@ export default {
     return {
       searchContent: '', //  搜索内容
       isSearchResultShow: false, //  是否展示搜索
-      suggestions: [] //  联想建议
+      suggestions: [], //  联想建议
+      htmlStr: '"Hello <span style="color: red">World</span>"'
     }
   },
   computed: {},
@@ -96,11 +101,24 @@ export default {
       if (!searchContent) {
         return
       }
+
       // 1.请求获取数据
       const { data } = await getSuggestions(searchContent)
+
       // 2.将数据添加到组件实例
       this.suggestions = data.data.options
+
       // 3.模板绑定
+    },
+    highlight (str) {
+      const searchContent = this.searchContent
+      //  /searchContent/正则表达式的一切内容都会当做字符串使用
+      //  可以通过new RegExp方式根据字符串创建一个正则表达式
+      //  RegExp 是原生 JavaScript 的内置构造函数
+      //  参数1:字符串,注意,这里不要加 // 
+      //  参数2: 匹配模式, g全局 , i忽略大小写
+      const reg = new RegExp(searchContent, 'gi')
+      return str.replace(reg, `<span style="color: #3296fa">${searchContent}</span>`)
     }
   }
 } 
@@ -108,7 +126,7 @@ export default {
 
 <style scoped lang="less">
 .search-container {
-  padding-top: 0px;
+  padding-top: 54px;
   // 让搜索栏固定在顶部
   .search-form {
     position: fixed;
