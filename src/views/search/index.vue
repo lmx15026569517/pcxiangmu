@@ -46,19 +46,11 @@
         &nbsp;&nbsp;
         <span>完成</span>
       </van-cell>
-      <van-cell title="单元格">
-        <van-icon name="close"></van-icon>
-      </van-cell>
-      <van-cell title="单元格">
-        <van-icon name="close"></van-icon>
-      </van-cell>
-      <van-cell title="单元格">
-        <van-icon name="close"></van-icon>
-      </van-cell>
-      <van-cell title="单元格">
-        <van-icon name="close"></van-icon>
-      </van-cell>
-      <van-cell title="单元格">
+      <van-cell 
+        :title="item"
+        v-for="(item, index)
+        in searchHistories"
+        :key="index">
         <van-icon name="close"></van-icon>
       </van-cell>
     </van-cell-group>
@@ -84,7 +76,8 @@ export default {
       searchContent: '', //  搜索内容
       isSearchResultShow: false, //  是否展示搜索
       suggestions: [], //  联想建议
-      htmlStr: '"Hello <span style="color: red">World</span>"'
+      // htmlStr: '"Hello <span style="color: red">World</span>"',
+      searchHistories: [] //  搜索历史记录
     }
   },
   computed: {}, //  传什么下面搜索什么
@@ -93,9 +86,18 @@ export default {
   mounted () {},
   methods: {
     onSearch (q) {
-      // window.console.log('onSearch')
+      // 1.更新搜索文本框的数据
       this.searchContent = q
-      //  展示结果
+
+      //  2.记录搜索历史记录
+      const searchHistories = this.searchHistories
+      const index = searchHistories.indexOf(q)
+      if (index !== -1) {
+        searchHistories.splice(index)
+      }
+      searchHistories.unshift(q)
+
+      // 3. 展示结果搜索结果
       this.isSearchResultShow = true
     },
 
