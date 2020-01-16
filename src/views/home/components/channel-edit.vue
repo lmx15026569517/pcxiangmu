@@ -18,7 +18,6 @@
       >
       <!-- 推荐频道不删除 -->
       <!-- :class="{ 
-         组建索引   active: index === active 父组件高亮索引
         }" 
         样式绑定.
         属性名: css 类名
@@ -49,6 +48,9 @@
 
 <script>
 import { getAllChannels } from '@/api/channel'
+// bug传值错了就是进入文件错了
+import { setItem } from '@/utils/storage'
+
 export default {
   name: 'ChannelEdit',
   components: {},
@@ -85,7 +87,13 @@ export default {
     return channels
     }
   },
-  watch: {},
+  watch: {
+    // 当userChannels 发深变化,会调用该函数(添加和删除都可以调用该数据,存放在本地存储)
+    userChannels (newVal) {
+      // 同步到本地存储
+      setItem('user-channels', newVal)
+    }
+  },
   created () {
     this.loadAllChannels()
   },
