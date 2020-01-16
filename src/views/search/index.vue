@@ -9,7 +9,7 @@
         placeholder="请输入搜索关键词"
         show-action
             background="#3296fa"
-        @search="onSearch"
+        @search="onSearch(searchContent)"
         @cancel="onCancel"
         @focus="isSearchResultShow = false" 
         @input="onSearchInput"
@@ -31,6 +31,7 @@
        icon="search"
        v-for="(item, index) in suggestions"
        :key="index"
+       @click="onSearch(item)"
         >
         <div slot="title" v-html="highlight(item)"></div>
       </van-cell>
@@ -86,15 +87,18 @@ export default {
       htmlStr: '"Hello <span style="color: red">World</span>"'
     }
   },
-  computed: {},
+  computed: {}, //  传什么下面搜索什么
   watch: {},
   created () {},
   mounted () {},
   methods: {
-    onSearch () {
-      window.console.log('onSearch')
+    onSearch (q) {
+      // window.console.log('onSearch')
+      this.searchContent = q
+      //  展示结果
       this.isSearchResultShow = true
     },
+
     onCancel () {
       window.console.log('onCancel')
     },
