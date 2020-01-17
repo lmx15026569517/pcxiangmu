@@ -41,17 +41,19 @@
     <!-- 历史记录 -->
     <van-cell-group  v-else>
       <van-cell title="历史记录">
-        <van-icon name="delete" />
-        <span>全部删除</span>
-        &nbsp;&nbsp;
-        <span>完成</span>
+        <template v-if="isDeleteShow">
+          <span>全部删除</span>
+          &nbsp;&nbsp;
+          <span @click="isDeleteShow = false ">完成</span>
+        </template>
+        <van-icon v-else name="delete" @click="isDeleteShow=true" />
       </van-cell>
       <van-cell 
         :title="item"
-        v-for="(item, index)
-        in searchHistories"
-        :key="index">
-        <van-icon name="close"></van-icon>
+        v-for="(item, index) in searchHistories"
+        :key="index"
+        >
+        <van-icon v-show="isDeleteShow" name="close"></van-icon>
       </van-cell>
     </van-cell-group>
     <!-- /历史记录 -->
@@ -77,7 +79,8 @@ export default {
       isSearchResultShow: false, //  是否展示搜索
       suggestions: [], //  联想建议
       // htmlStr: '"Hello <span style="color: red">World</span>"',
-      searchHistories: [] //  搜索历史记录
+      searchHistories: [], //  搜索历史记录
+      isDeleteShow: false //  删除历史记录的显示状态
     }
   },
   computed: {}, //  传什么下面搜索什么
