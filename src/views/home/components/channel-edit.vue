@@ -2,13 +2,13 @@
   <div class="channel-edit">
     <!-- 按钮样式组件 -->
     <van-cell title="我的频道" :border="false">
-        <van-button 
-        size="mini" 
-        round 
+        <van-button
+        size="mini"
+        round
         plain
         @click="isEditShow = !isEditShow"
         >{{ isEditShow ? '完成' : '编辑' }}</van-button>
-    </van-cell> 
+    </van-cell>
     <!-- bug  说我两个对象,就是:key没有写.id -->
     <van-grid :gutter="10" clickable>
       <van-grid-item
@@ -17,13 +17,13 @@
         @click="onUserChannelClik(index)"
       >
       <!-- 推荐频道不删除 -->
-      <!-- :class="{ 
-        }" 
+      <!-- :class="{
+        }"
         样式绑定.
         属性名: css 类名
         属性值:一个布尔值
         -->
-      <span 
+      <span
       slot="text"
       class="text"
       :class="{
@@ -69,22 +69,22 @@ export default {
   data () {
     return {
       allChannels: [], //  所有频道
-      isEditShow: false  //  控制显示和隐藏
+      isEditShow: false //  控制显示和隐藏
     }
   },
   computed: {
     remainingChannels () {
-    const { allChannels, userChannels } = this
-    // 剩余频道 = 所有频道 - 我的频道
-    const channels = []
-    // 遍历所有频道
-    allChannels.forEach(item => {
+      const { allChannels, userChannels } = this
+      // 剩余频道 = 所有频道 - 我的频道
+      const channels = []
+      // 遍历所有频道
+      allChannels.forEach(item => {
       // 如果我的频道中不包含当前被遍历的频道，则要
-      if (!userChannels.find(c => c.id === item.id)) {
-        channels.push(item)
-      }
-    })
-    return channels
+        if (!userChannels.find(c => c.id === item.id)) {
+          channels.push(item)
+        }
+      })
+      return channels
     }
   },
   watch: {
@@ -109,10 +109,10 @@ export default {
     onUserChannelClik (index) {
       //  如果是编辑状态, 则执行删除操作
       if (this.isEditShow && index !== 0) {
-        this.userChannels.splice(index, 1)  // 从索引处开始,删除指定的个数
+        this.userChannels.splice(index, 1) // 从索引处开始,删除指定的个数
       } else {
       //  如果是非编辑状态,则执行切换频道操作
-      this.$emit('switch', index)
+        this.$emit('switch', index)
       }
     }
   }

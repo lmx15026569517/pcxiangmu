@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import {  getSearch } from '@/api/search'
+import { getSearch } from '@/api/search'
 export default {
   name: 'SearchResult',
   components: {
@@ -32,7 +32,7 @@ export default {
       list: [],
       loading: false,
       finished: false,
-      page: 1,// 页码
+      page: 1, // 页码
       perPage: 20 // 每页
     }
   },
@@ -41,29 +41,28 @@ export default {
   created () {},
   mounted () {},
   methods: {
-  async  onLoad () {
-     // 1.请求获取数据
-    const { data } = await getSearch({
-      page: this.page, // 请求页码
-      per_page: this.perPage, // 每页大小
-      q: this.q  // 查询参数
-    })
+    async  onLoad () {
+      // 1.请求获取数据
+      const { data } = await getSearch({
+        page: this.page, // 请求页码
+        per_page: this.perPage, // 每页大小
+        q: this.q // 查询参数
+      })
 
-     // 2.将数据添加到列表
-     const { results } = data.data
-     this.list.push(...results)
-     
-     // 3.关闭本次的loading状态
-    this.loading = false
+      // 2.将数据添加到列表
+      const { results } = data.data
+      this.list.push(...results)
 
-     // 4.判断是否还有数据局
-     if (results.length) {
-       this.page++ // 更新获取下一页数据的页码
-     } else {
-          this.finished = true // 没有数据了,关闭假造更多
-     }
-     // 5.模板绑定
+      // 3.关闭本次的loading状态
+      this.loading = false
 
+      // 4.判断是否还有数据局
+      if (results.length) {
+        this.page++ // 更新获取下一页数据的页码
+      } else {
+        this.finished = true // 没有数据了,关闭假造更多
+      }
+      // 5.模板绑定
     }
   }
 }

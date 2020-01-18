@@ -7,10 +7,10 @@
     <!-- 用户信息 -->
     <div class="user-info-container">
       <div class="row1">
-        <van-image 
-        class="col1" 
-        fit="cover" 
-        round 
+        <van-image
+        class="col1"
+        fit="cover"
+        round
         :src="user.photo" />
         <div class="col2">
           <div class="row1">
@@ -66,61 +66,61 @@
 
 <script>
 //  引入接口
-import { getUserById } from "@/api/user";
-import { getArticlesByUser } from "@/api/article";
+import { getUserById } from '@/api/user'
+import { getArticlesByUser } from '@/api/article'
 export default {
-  name: "UserPage",
+  name: 'UserPage',
   components: {},
   props: {},
-  data() {
+  data () {
     return {
       user: {}, //  用户信息
       list: [], //  列表数据
       loading: false, //  控制上拉加载更多的 loading
       finished: false, //  是否加载结束了
       page: 1 //  获取下一页数据页码
-    }; //  用户信息
+    } //  用户信息
   },
   computed: {},
   watch: {},
-  created() {
-    this.loadUser();
+  created () {
+    this.loadUser()
   },
-  mounted() {},
+  mounted () {},
   methods: {
-    async loadUser() {
+    async loadUser () {
       try {
-        const { data } = await getUserById(this.$route.params.useId); //  传入用户ID
+        const { data } = await getUserById(this.$route.params.useId) //  传入用户ID
         this.user = data.data
       } catch (err) {
-        window.console.log(err);
-        this.$toast("获取用户数据失败");
+        window.console.log(err)
+        this.$toast('获取用户数据失败')
       }
     },
-    async onLoad() {
+    async onLoad () {
       // 1.请求获取数据
       const { data } = await getArticlesByUser(this.$route.params.useId, {
         page: this.page, // 可选的，默认是第 1 页
         per_page: 20 // 可选的，默认每页 10 条
-      });
+      })
       // 2. 把数据添加到列表中
       // list []
       // data.data.results []
       // ...[1, 2, 3] 会把数组给展开，所谓的展开就是一个一个的拿出来
-      const { results } = data.data;
-      this.list.push(...results);
+      const { results } = data.data
+      this.list.push(...results)
       // 3.加载状态结束
 
-      this.loading = false;
+      this.loading = false
       // 4.判断数据是否全部加载完毕
       if (results.length) {
-        this.page++; //  更新获取下一页数据页码
+        this.page++ //  更新获取下一页数据页码
       } else {
-        this.finished = true; //  没有数据了,不需要加载更多
+        this.finished = true //  没有数据了,不需要加载更多
       }
     }
   }
-};
+}
 </script>
 
 <style scoped lang="less">

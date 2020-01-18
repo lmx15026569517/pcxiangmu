@@ -94,13 +94,13 @@ export default {
   mounted () {},
   methods: {
     async loadUser () {
-    try { 
-      const { data } = await getUserInfo()
-      this.user = data.data
-    } catch (err) {
-      window.lonsole(err)
-      this.$toast('获取数据失败')
-      } 
+      try {
+        const { data } = await getUserInfo()
+        this.user = data.data
+      } catch (err) {
+        window.lonsole(err)
+        this.$toast('获取数据失败')
+      }
     },
 
     async onLogout () {
@@ -109,8 +109,7 @@ export default {
         message: '确认退出吗'
       })
       //  清除登录状态
-      this.$store.commit('setUser',null)  // 视图清空 也是views.index的方法
-  
+      this.$store.commit('setUser', null) // 视图清空 也是views.index的方法
     }
   }
 }

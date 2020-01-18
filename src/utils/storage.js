@@ -1,17 +1,17 @@
 /**
  * 封装操作本地存储
- * 
+ *
  * 获取指定数据
  * @param {String}数据名称
  */
 export const getItem = name => {
-    const data = window.localStorage.getItem(name)
-    try {
-        return JSON.parse(data)
-    } catch (err) {
-        window.console.log('转换失败', err)
-        return data
-    }
+  const data = window.localStorage.getItem(name)
+  try {
+    return JSON.parse(data)
+  } catch (err) {
+    window.console.log('转换失败', err)
+    return data
+  }
 }
 
 /***
@@ -20,17 +20,17 @@ export const getItem = name => {
  * @param {} 数据值
  */
 export const setItem = (name, value) => {
-    const data = typeof value === 'object' ?
-        JSON.stringify(value) :
-        value
-    window.localStorage.setItem(name, data)
+  const data = typeof value === 'object'
+    ? JSON.stringify(value)
+    : value
+  window.localStorage.setItem(name, data)
 }
 
 /***
  * 删除数据
  * @param {String} 数据名称
- * 
+ *
  */
 export const removeItem = name => {
-    window.localStorage.removeItem(name)
+  window.localStorage.removeItem(name)
 }

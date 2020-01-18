@@ -8,12 +8,12 @@
     <van-icon name="fire-o" /> -->
     <!-- 改icon图标的时候 -->
     <!--class-prefix="foo"
-     name="abc"     
+     name="abc"
 
-     foo foo-abc    
+     foo foo-abc
 
-     iconfont icon-apple   
- 
+     iconfont icon-apple
+
      -->
   </div>
 </template>
@@ -23,11 +23,10 @@
 //  @ 是src的目录别名
 
 export default {
-// 根组件 
+// 根组件
   name: 'App'
 }
 </script>
-
 
 <style lang="less">
 //  注意: 在style中使用@别名需要在前面加~

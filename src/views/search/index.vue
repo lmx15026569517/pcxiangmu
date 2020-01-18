@@ -11,7 +11,7 @@
             background="#3296fa"
         @search="onSearch(searchContent)"
         @cancel="onCancel"
-        @focus="isSearchResultShow = false" 
+        @focus="isSearchResultShow = false"
         @input="onSearchInput"
       />
       <!-- @focus="isSearchResultShow = false" 就是获取焦点时候把搜索关掉 -->
@@ -19,15 +19,15 @@
     <!-- /搜索栏 -->
 
      <!-- 搜索结果 isSearchResultShow = true 逻辑 -->
-    <search-result 
-      v-if="isSearchResultShow" 
+    <search-result
+      v-if="isSearchResultShow"
       :q="searchContent"
       />
     <!-- /搜索结果 -->
 
      <!-- 联想建议 isSearchResultShow=false 文本框有内容显示联想建议-->
     <van-cell-group v-else-if="searchContent">
-      <van-cell 
+      <van-cell
        icon="search"
        v-for="(item, index) in suggestions"
        :key="index"
@@ -48,7 +48,7 @@
         </template>
         <van-icon v-else name="delete" @click="isDeleteShow=true" />
       </van-cell>
-      <van-cell 
+      <van-cell
         :title="item"
         v-for="(item, index) in searchHistories"
         :key="index"
@@ -58,14 +58,14 @@
     </van-cell-group>
     <!-- /历史记录 -->
 
-   
   </div>
 </template>
 
 <script>
 import SearchResult from './components/search-result'
 import { getSuggestions } from '@/api/search'
-
+import { debounce } from 'lodash'
+import { getItem, setItem } from '@/utils/storage'
 
 export default {
   name: 'SearchPage',
@@ -79,12 +79,17 @@ export default {
       isSearchResultShow: false, //  是否展示搜索
       suggestions: [], //  联想建议
       // htmlStr: '"Hello <span style="color: red">World</span>"',
-      searchHistories: [], //  搜索历史记录
+      searchHistories: getItem('serach-histories') || [], //  搜索历史记录
       isDeleteShow: false //  删除历史记录的显示状态
     }
   },
   computed: {}, //  传什么下面搜索什么
-  watch: {},
+  //  val和this.searchHistories一样的
+  watch: {
+    searchHistories (val) {
+      setItem('serach-histories', val)
+    }
+  },
   created () {},
   mounted () {},
   methods: {
@@ -107,9 +112,10 @@ export default {
     onCancel () {
       window.console.log('onCancel')
     },
-
-   async onSearchInput () {
-    const searchContent = this.searchContent
+    //  debounce 函数,参数1:是函数,参数2是防抖时间
+    // 返回值:防抖之后的函数,和参数1功能一样的
+    onSearchInput: debounce(async function () {
+      const searchContent = this.searchContent
       if (!searchContent) {
         return
       }
@@ -121,19 +127,34 @@ export default {
       this.suggestions = data.data.options
 
       // 3.模板绑定
-    },
+    }, 200),
+
+    // async onSearchInput () {
+    //   const searchContent = this.searchContent
+    //   if (!searchContent) {
+    //     return
+    //   }
+
+    //   // 1.请求获取数据
+    //   const { data } = await getSuggestions(searchContent)
+
+    //   // 2.将数据添加到组件实例
+    //   this.suggestions = data.data.options
+
+    //   // 3.模板绑定
+    // },
     highlight (str) {
       const searchContent = this.searchContent
       //  /searchContent/正则表达式的一切内容都会当做字符串使用
       //  可以通过new RegExp方式根据字符串创建一个正则表达式
       //  RegExp 是原生 JavaScript 的内置构造函数
-      //  参数1:字符串,注意,这里不要加 // 
+      //  参数1:字符串,注意,这里不要加 //
       //  参数2: 匹配模式, g全局 , i忽略大小写
       const reg = new RegExp(searchContent, 'gi')
       return str.replace(reg, `<span style="color: #3296fa">${searchContent}</span>`)
     }
   }
-} 
+}
 </script>
 
 <style scoped lang="less">
