@@ -50,6 +50,12 @@ const routes = [{
   name: 'search',
   component: () =>
             import ('@/views/search')
+},
+{
+  path: '/article/:articleId',
+  name: 'article',
+  component: () => import('@/views/article'),
+  props: true //  将路由动态参数映射到组件的 props 中  不需要$router传了
 }
 ]
 
