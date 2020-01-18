@@ -84,7 +84,7 @@ export default {
     }
   },
   computed: {}, //  传什么下面搜索什么
-  //  val和this.searchHistories一样的
+  //  val和this.searchHistories一样的 参数一是新的数据  参数2 是变化之前的数据
   watch: {
     searchHistories (val) {
       setItem('serach-histories', val)
