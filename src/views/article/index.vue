@@ -11,7 +11,7 @@
 
     <!-- 加载中 -->
     <van-loading
-    v-if="loading"
+      v-if="loading"
       class="loading"
       color="#1989fa"
       vertical
@@ -34,10 +34,18 @@
           />
           <div class="text">
             <p class="name">{{ article.aut_name }}</p>
-            <p class="time">{{ article.pubdate }}</p>
+            <p class="time">{{ article.pubdate | relativeTime }}</p>
           </div>
         </div>
-        <van-button class="follow-btn" type="info" size="small" round>+ 关注</van-button>
+        <van-button
+            v-if="!user || article.aut_id !== user.id"
+            class="follow-btn"
+            :type="article.is_followed ? 'default' : 'info'"
+            size="small"
+            round
+            :loading="isFollowLoading"
+            @click="onFollow"
+            >{{ article.is_followed ? '关注' : '+关注' }}</van-button>
       </div>
       <div class="markdown-body" v-html="article.content">
       </div>
@@ -70,13 +78,16 @@
         name="comment-o"
         info="9"
       />
+      <!-- //:name="article.is_collected ? 'star' : 'star-o'"收藏点赞就是1 -->
       <van-icon
         color="orange"
-        name="star"
+        :name="article.is_collected ? 'star' : 'star-o'"
+        @click="onCollect"
       />
       <van-icon
         color="#e5645f"
-        name="good-job"
+        :name="article.attitude === 1 ? 'good-job' : 'good-job-o'"
+        @click="onLike"
       />
       <van-icon class="share-icon" name="share" />
     </div>
@@ -85,8 +96,16 @@
 </template>
 
 <script>
-import { getArticleById } from '@/api/article'
+import { getArticleById,
+  addCollect,
+  deleteCollect,
+  addLike,
+  deleteLike
+} from '@/api/article'
+import { addFollow, deleteFollow } from '@/api/user'
 
+// mapState映射的意思
+import { mapState } from 'vuex'
 export default {
   name: 'ArticlePage',
   components: {},
@@ -99,10 +118,25 @@ export default {
   data () {
     return {
       article: {}, //  文章详情
-      loading: true //  文章加载中的loading状态
+      loading: true, //  文章加载中的loading状态
+      isFollowLoading: false // 关注按钮的loading状态
     }
   },
-  computed: {},
+  computed: {
+    // mapState 方法返回一个对象,对象中就是映射过来的数据成员
+    //  ...操作符就是把一个对象展开,混入当前对象中
+    ...mapState(['user'])
+  },
+
+  //  1.  需要哪个计算属性谁就写谁 this.user
+  // computed: mapState(['user']),
+
+  //  2. computed: {
+  //  优化获取容器中的数据this.user
+  // user () {
+  //   return this.$store.state.user
+  // }
+  // },
   watch: {},
   created () {
     this.loadArticle()
@@ -110,14 +144,83 @@ export default {
   mounted () {},
   methods: {
     async loadArticle () {
-      this.loading = true
+      this.loading = true // 在加失败后也可刷新页面重新加载
       try {
         const { data } = await getArticleById(this.articleId)
         this.article = data.data
       } catch (err) {
         window.console.log(err)
       }
-      this.loading = false
+      this.loading = false// 加载成功或者失败都是可以暂停
+    },
+
+    async onCollect () {
+      this.$toast.loading({
+        duration: 0, //  持续展示 toast
+        message: '操作中...',
+        forbidClick: true //  是否禁止背景点击
+      })
+
+      try {
+        //  如果没有收藏, 则添加收藏
+        //  如果收藏了,则取消收藏
+        if (this.article.is_collected) {
+          await deleteCollect(this.articleId)
+          this.article.is_collected = false
+          this.$toast.success('取消收藏')
+        } else {
+        //  添加收藏
+          await addCollect(this.articleId)
+          this.article.is_collected = true
+          this.$toast.success('收藏成功')
+        }
+      } catch (err) {
+        window.console.log(err)
+        this.$toast.fail('操作失败')
+      }
+    },
+
+    async onLike () {
+      this.$toast.loading({
+        duration: 0, //  持续展示 toast
+        message: '操作中...',
+        forbidClick: true //  是否禁止背景点击
+      })
+
+      try {
+        //  如果已赞, 则取消赞
+        if (this.article.attitude === 1) {
+          await deleteLike(this.articleId)
+          this.article.attitude = -1
+          this.$toast.success('取消点赞')
+        } else {
+        //  添加收藏
+          await addLike(this.articleId)
+          this.article.attitude = 1
+          this.$toast.success('点赞成功')
+        }
+      } catch (err) {
+        window.console.log(err)
+        this.$toast.fail('操作失败')
+      }
+    },
+    async onFollow () {
+      this.isFollowLoading = true
+      try {
+        const authorId = this.article.aut_id
+        //  如果已关注  则取消关注,
+        if (this.article.is_followed) {
+          await deleteFollow(authorId)
+        } else {
+        //  添加关注
+          await addFollow(authorId)
+        }
+        this.article.is_followed = !this.article.is_followed
+      } catch (err) {
+        window.console.log(err)
+        this.$toast.fail('操作失败')
+      }
+      this.isFollowLoading = false
     }
   }
 }
@@ -158,6 +261,7 @@ export default {
           line-height: 1.5;
           .name {
             margin: 0;
+            background-attachment: fixed;
             font-size: 14px;
           }
           .time {

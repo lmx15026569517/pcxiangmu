@@ -15,7 +15,8 @@ import './utils/register-vant'
 // 加载全局样式
 import './styles/index.less'
 
-// window.console.log(123)
+// 加载初始日期时间库
+import './utils/datetime'
 
 Vue.config.productionTip = false
 

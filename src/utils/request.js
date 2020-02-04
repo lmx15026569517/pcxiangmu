@@ -4,7 +4,8 @@
 
 import axios from 'axios'
 import jsonBig from 'json-bigint'
-//  这里拿到的 store和你在组建中访问的 this.$store 是一个东子
+// import jsonBig from 'jsonBig'
+//  这里拿到的 store和你在组建中访问的 this.$store 是一个东西
 import store from '@/store'
 
 //  axios.create 方法创建一个和axios本身一样的对象
@@ -25,7 +26,7 @@ request.defaults.transformResponse = [function (data) {
     //  它默认是这样的
     // return JSON.parse(data)
   } catch (err) {
-    window.console.log('转换失败', err)
+    // window.console.log('转换失败', err)
     return {}
   }
 }]
