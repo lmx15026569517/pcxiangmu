@@ -47,8 +47,13 @@
             @click="onFollow"
             >{{ article.is_followed ? '关注' : '+关注' }}</van-button>
       </div>
-      <div class="markdown-body" v-html="article.content">
-      </div>
+      <!-- 文章内容 -->
+      <div class="markdown-body" v-html="article.content"></div>
+      <!-- 文章内容/ -->
+
+      <!-- 文章评论 -->
+      <article-comment />
+      <!-- /文章评论 -->
     </div>
     <!-- /文章详情 -->
 
@@ -103,12 +108,18 @@ import { getArticleById,
   deleteLike
 } from '@/api/article'
 import { addFollow, deleteFollow } from '@/api/user'
-
-// mapState映射的意思
+import ArticleComment from '../article/components/article-comments'
+// vuex 模块提供了一些辅助方法,专门用来让我们方便的获取容器中的数据
+// mapState映射获取state数据
+// maMutation:映射获取mutation数据
+// mapAction:映射获取action数据
 import { mapState } from 'vuex'
 export default {
   name: 'ArticlePage',
-  components: {},
+  components: {
+    // eslint-disable-next-line vue/no-unused-components
+    ArticleComment
+  },
   props: {
     articleId: {
       type: String,
